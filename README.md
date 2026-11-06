@@ -210,3 +210,4 @@ Developed as an IoT and Embedded Systems Engineering showcase.
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE) - feel free to use and adapt it for academic and personal projects!
+

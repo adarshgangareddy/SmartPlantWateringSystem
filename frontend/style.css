@@ -670,3 +670,4 @@ input:checked + .slider:before {
   .components-grid { grid-template-columns: 1fr; }
   .control-actions { grid-template-columns: 1fr; }
 }
+
