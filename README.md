@@ -165,16 +165,6 @@ Soil moisture sensor analog output varies with soil salinity, mineral content, a
 
 ---
 
-## 🌐 Deploy to GitHub Pages (Live Demo for Recruiters)
-
-1. Push this repository to GitHub.
-2. In your GitHub repo, go to **Settings > Pages**.
-3. Under **Branch**, select `main` and set the folder to `/frontend` (or copy `frontend` files to the root).
-4. Save. Your live web dashboard will be accessible at:
-   `https://<your-username>.github.io/<repo-name>/`
-5. Recruiters can turn on **"Demo Simulation"** to explore your interactive IoT telemetry dashboard right from their browser!
-
----
 
 ## 📂 Repository Structure
 
@@ -197,15 +187,6 @@ SmartPlantWateringSystem/
 
 ---
 
-## 👨‍💻 Author & Portfolio
-
-Developed as an IoT and Embedded Systems Engineering showcase.
-
-- **GitHub**: [github.com/your-username](https://github.com/)
-- **LinkedIn**: [linkedin.com/in/your-profile](https://linkedin.com/)
-- **YouTube Demonstration**: [Video Link](https://www.youtube.com/watch?v=YOUR_VIDEO_ID_HERE)
-
----
 
 ## 📄 License
 
