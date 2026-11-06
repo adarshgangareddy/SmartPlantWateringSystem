@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Plant Watering System | IoT Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts & Chart.js -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="logo-icon">🌱</div>
+      <div>
+        <h1>FloraPulse IoT</h1>
+        <p class="subtitle">Smart Plant Hydration & Telemetry Hub</p>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <!-- Simulation Mode Toggle for GitHub Pages Demo -->
+      <div class="sim-toggle-wrap">
+        <label class="switch">
+          <input type="checkbox" id="simToggle">
+          <span class="slider round"></span>
+        </label>
+        <span class="sim-label">Demo Simulation</span>
+      </div>
+
+      <!-- Connection Status Badge -->
+      <div class="status-pill disconnected" id="connectionBadge">
+        <span class="pulse-dot"></span>
+        <span id="connectionText">Disconnected</span>
+      </div>
+
+      <!-- Connect Button -->
+      <button id="connectBtn" class="btn btn-primary">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+        <span id="connectBtnText">Connect Arduino</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="dashboard-grid">
+
+    <!-- Column 1: Live Telemetry & Gauge -->
+    <section class="card telemetry-card">
+      <div class="card-header">
+        <h2>Live Soil Moisture</h2>
+        <span class="badge" id="moistureCategoryBadge">Calculating...</span>
+      </div>
+
+      <div class="gauge-container">
+        <svg class="gauge-svg" viewBox="0 0 200 200">
+          <circle class="gauge-bg" cx="100" cy="100" r="80"></circle>
+          <circle class="gauge-fill" id="gaugeProgress" cx="100" cy="100" r="80"></circle>
+        </svg>
+        <div class="gauge-value-box">
+          <span class="gauge-number" id="moistureValue">--</span>
+          <span class="gauge-unit">%</span>
+          <span class="gauge-raw" id="rawValDisplay">Raw ADC: ---</span>
+        </div>
+      </div>
+
+      <!-- Quick Stats Row -->
+      <div class="quick-stats-row">
+        <div class="stat-item">
+          <span class="stat-label">Threshold</span>
+          <span class="stat-value" id="currentThresholdStat">30%</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Pump Status</span>
+          <span class="stat-value pump-stat" id="pumpStatusStat">OFF</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Mode</span>
+          <span class="stat-value" id="systemModeStat">AUTO</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Column 2: System Control Panel -->
+    <section class="card control-card">
+      <div class="card-header">
+        <h2>Actuator & Control Hub</h2>
+        <span class="badge badge-active" id="controlModeBadge">AUTOMATIC</span>
+      </div>
+
+      <div class="control-section">
+        <label class="control-label">Operation Mode</label>
+        <div class="mode-toggle-group">
+          <button class="mode-btn active" id="modeAutoBtn">🤖 Automatic</button>
+          <button class="mode-btn" id="modeManualBtn">🖐️ Manual Override</button>
+        </div>
+      </div>
+
+      <div class="control-section">
+        <div class="threshold-header">
+          <label class="control-label">Moisture Trigger Threshold</label>
+          <span class="threshold-bubble" id="thresholdValueDisplay">30%</span>
+        </div>
+        <input type="range" min="10" max="80" value="30" class="custom-range" id="thresholdSlider">
+        <p class="field-hint">Pump triggers automatically when moisture falls below this level.</p>
+      </div>
+
+      <div class="control-actions">
+        <button id="waterBurstBtn" class="btn btn-water">
+          💧 Quick Water (3s Burst)
+        </button>
+        <button id="pumpToggleBtn" class="btn btn-outline">
+          ▶ Toggle Pump Continuous
+        </button>
+        <button id="emergencyStopBtn" class="btn btn-danger">
+          ⛔ Emergency Stop
+        </button>
+      </div>
+    </section>
+
+    <!-- Hardware Ecosystem Status Card -->
+    <section class="card hardware-card">
+      <div class="card-header">
+        <h2>Hardware Components Health</h2>
+        <span class="badge badge-info">5 Devices Monitored</span>
+      </div>
+
+      <div class="components-grid">
+        <!-- 1. Arduino Uno -->
+        <div class="comp-box" id="compArduino">
+          <div class="comp-icon">⚡</div>
+          <div class="comp-info">
+            <span class="comp-name">1. Arduino Uno R3</span>
+            <span class="comp-detail" id="arduinoStatus">ATmega328P • 9600 Baud</span>
+          </div>
+          <span class="comp-status-tag tag-ready">Ready</span>
+        </div>
+
+        <!-- 2. Soil Moisture Sensor -->
+        <div class="comp-box" id="compSensor">
+          <div class="comp-icon">🌾</div>
+          <div class="comp-info">
+            <span class="comp-name">2. Moisture Sensor</span>
+            <span class="comp-detail" id="sensorStatus">Analog Pin A0 • Calibrated</span>
+          </div>
+          <span class="comp-status-tag tag-active" id="sensorTag">Active</span>
+        </div>
+
+        <!-- 3. Relay Module -->
+        <div class="comp-box" id="compRelay">
+          <div class="comp-icon">🎚️</div>
+          <div class="comp-info">
+            <span class="comp-name">3. Relay Module</span>
+            <span class="comp-detail" id="relayStatus">Digital Pin 7 • 5V Active-Low</span>
+          </div>
+          <span class="comp-status-tag tag-idle" id="relayTag">Idle (Coil OFF)</span>
+        </div>
+
+        <!-- 4. Battery System -->
+        <div class="comp-box" id="compBattery">
+          <div class="comp-icon">🔋</div>
+          <div class="comp-info">
+            <span class="comp-name">4. Battery Power Pack</span>
+            <span class="comp-detail">Dual 18650 Li-ion Cells • ~7.4V DC</span>
+          </div>
+          <span class="comp-status-tag tag-ready">Normal</span>
+        </div>
+
+        <!-- 5. Water Pump & Wires -->
+        <div class="comp-box" id="compPump">
+          <div class="comp-icon" id="pumpIconAnim">🌊</div>
+          <div class="comp-info">
+            <span class="comp-name">5. Submersible Pump & Lines</span>
+            <span class="comp-detail" id="pumpSubDetail">3-6V DC Micro Pump • Ready</span>
+          </div>
+          <span class="comp-status-tag tag-idle" id="pumpTag">Standby</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-time Chart Section -->
+    <section class="card chart-card">
+      <div class="card-header">
+        <h2>Live Moisture Trend Analytics</h2>
+        <span class="chart-legend-tag">Real-Time Data Feed</span>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="moistureChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Serial Activity & Console Log -->
+    <section class="card log-card">
+      <div class="card-header">
+        <h2>Serial Console & Event Log</h2>
+        <button id="clearLogBtn" class="btn-text">Clear Log</button>
+      </div>
+      <div class="console-box" id="consoleBox">
+        <div class="log-entry system">[SYSTEM] FloraPulse IoT Dashboard Initialized.</div>
+        <div class="log-entry info">[INFO] Ready to establish Web Serial connection with Arduino Uno.</div>
+        <div class="log-entry tip">[TIP] Enable "Demo Simulation" toggle above to preview real-time telemetry without hardware.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Smart Plant Watering IoT System • Portfolio Edition • Designed for Arduino Uno & Modern Web Serial API</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

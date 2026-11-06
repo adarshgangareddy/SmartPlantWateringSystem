@@ -1,0 +1,19 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python / Server
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Arduino
+*.hex
+*.elf
+
+# IDE
+.vscode/
+.idea/
