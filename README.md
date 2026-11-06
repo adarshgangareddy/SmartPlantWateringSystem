@@ -13,7 +13,7 @@ An intelligent, automated IoT plant irrigation and telemetry system. Built with 
 
 ## 📸 Hardware Setup
 
-![Smart Plant Watering System Hardware Setup](assets/project_hardware.jpg)
+![Smart Plant Watering System Hardware Setup](assets/project-hardware.png)
 
 ---
 
