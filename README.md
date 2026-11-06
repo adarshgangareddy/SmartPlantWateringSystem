@@ -13,7 +13,7 @@ An intelligent, automated IoT plant irrigation and telemetry system. Built with 
 
 ## 📸 Hardware Setup
 
-![Smart Plant Watering System Hardware Setup](assets/project-hardware.png)
+![Smart Plant Watering System Hardware Setup](assets/hardware.png)
 
 ---
 
@@ -21,9 +21,7 @@ An intelligent, automated IoT plant irrigation and telemetry system. Built with 
 
 Watch the system in action (hardware demonstration, automatic threshold detection, and water pump activation):
 
-[![Watch the Demo on YouTube](https://img.shields.io/badge/YouTube-Watch%20Demo%20Video-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID_HERE)
-
-> 💡 *Note: Replace `https://www.youtube.com/watch?v=YOUR_VIDEO_ID_HERE` with your actual YouTube video link.*
+[![Watch the Demo on YouTube](https://img.shields.io/badge/YouTube-Watch%20Demo%20Video-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/YdpQVIcMXHU)
 
 ---
 
